@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         scope.launch {
             val todos = dao.getTodos()
             binding.rvTasks.layoutManager = LinearLayoutManager(baseContext)
-            binding.rvTasks.adapter = TodoAdapter(todos) { todoTitle ->
+            binding.rvTasks.adapter = TodoAdapter(baseContext, todos) { todoTitle ->
                 scope.launch {
                     dao.deleteTodo(todoTitle)
                 }

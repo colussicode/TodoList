@@ -1,35 +1,37 @@
 package com.example.todolist
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.todolist.databinding.TodoItemBinding
 
 class TodoAdapter(
+
+    private val context: Context,
     private val todoList: List<TodoModel>,
     private val onRemoveTodo: (todoTitle: String) -> Unit
+
 ): RecyclerView.Adapter<TodoAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        val textView: TextView = view.findViewById(R.id.todo_checkbox)
+    class ViewHolder(binding: TodoItemBinding): RecyclerView.ViewHolder(binding.root) {
+        val checkBox: CheckBox = binding.todoCheckbox
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.todo_item, parent, false)
-
+        val view = TodoItemBinding.inflate(LayoutInflater.from(context), parent, false)
         return ViewHolder(view)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.textView.text = todoList[position].todoTitle
+        holder.checkBox.text = todoList[position].todoTitle
 
-        holder.textView.setOnClickListener {
+        holder.checkBox.setOnClickListener {
             onRemoveTodo(todoList[position].todoTitle)
+            notifyDataSetChanged()
         }
     }
 
