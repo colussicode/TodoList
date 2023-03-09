@@ -22,7 +22,7 @@ class TodoAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.textView.text = todoList[position].title
+        holder.textView.text = todoList[position].todoTitle
     }
 
     override fun getItemCount() = todoList.size

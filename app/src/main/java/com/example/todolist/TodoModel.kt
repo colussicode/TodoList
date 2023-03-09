@@ -1,5 +1,10 @@
 package com.example.todolist
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "todos")
 data class TodoModel(
-    val title: String
+    @PrimaryKey @ColumnInfo(name = "todo_title") val todoTitle: String
 )
