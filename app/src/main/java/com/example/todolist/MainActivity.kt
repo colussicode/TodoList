@@ -29,13 +29,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        todoItemBiding.todoCheckbox.setOnClickListener {
-            deleteTodo()
-        }
-    }
-
     private fun goToCreateTodoScreen() {
         val intent =  Intent(this, CreateTodoActivity::class.java)
         startActivity(intent)
@@ -46,17 +39,8 @@ class MainActivity : AppCompatActivity() {
         scope.launch {
             val todos = dao.getTodos()
             binding.rvTasks.layoutManager = LinearLayoutManager(baseContext)
-            binding.rvTasks.adapter = TodoAdapter(todos)
-        }
-    }
-
-    private fun deleteTodo() {
-       val scope =  CoroutineScope(Dispatchers.IO)
-        scope.launch {
-            val todoId = todoItemBiding.todoCheckbox.text.toString()
-            println(todoId)
-            if(todoItemBiding.todoCheckbox.isChecked) {
-                dao.deleteTodo(todoId)
+            binding.rvTasks.adapter = TodoAdapter(todos) {
+                dao.deleteTodo(todoItemBiding.todoCheckbox.text.toString())
             }
         }
     }

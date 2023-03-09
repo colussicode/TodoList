@@ -5,9 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class TodoAdapter(
-    private val todoList: List<TodoModel>
+    private val todoList: List<TodoModel>,
+    private val onRemoveTodo: (todoTitle: String) -> Unit
 ): RecyclerView.Adapter<TodoAdapter.ViewHolder>() {
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
@@ -23,6 +27,14 @@ class TodoAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.textView.text = todoList[position].todoTitle
+
+        holder.textView.setOnClickListener {
+            val scope = CoroutineScope(Dispatchers.IO)
+            scope.launch {
+                onRemoveTodo(todoList[position].todoTitle)
+            }
+            notifyItemRemoved(position)
+        }
     }
 
     override fun getItemCount() = todoList.size
