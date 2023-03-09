@@ -39,8 +39,10 @@ class MainActivity : AppCompatActivity() {
         scope.launch {
             val todos = dao.getTodos()
             binding.rvTasks.layoutManager = LinearLayoutManager(baseContext)
-            binding.rvTasks.adapter = TodoAdapter(todos) {
-                dao.deleteTodo(todoItemBiding.todoCheckbox.text.toString())
+            binding.rvTasks.adapter = TodoAdapter(todos) { todoTitle ->
+                scope.launch {
+                    dao.deleteTodo(todoTitle)
+                }
             }
         }
     }

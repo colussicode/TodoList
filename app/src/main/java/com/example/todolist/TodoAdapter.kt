@@ -29,11 +29,7 @@ class TodoAdapter(
         holder.textView.text = todoList[position].todoTitle
 
         holder.textView.setOnClickListener {
-            val scope = CoroutineScope(Dispatchers.IO)
-            scope.launch {
-                onRemoveTodo(todoList[position].todoTitle)
-            }
-            notifyItemRemoved(position)
+            onRemoveTodo(todoList[position].todoTitle)
         }
     }
 
