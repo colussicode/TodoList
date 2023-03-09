@@ -6,14 +6,17 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todolist.databinding.ActivityMainBinding
 import com.example.todolist.databinding.TodoItemBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var todoItemBiding: TodoItemBinding
     private lateinit var dao: TodoDAO
+    private val todoAdapter: TodoAdapter by lazy {
+        TodoAdapter { todoTitle ->
+            removeTodo(todoTitle)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         dao = AppDatabase.getInstance(baseContext).todoDao()
 
         initRv()
+        getTodos()
 
         binding.buttonNewTodo.setOnClickListener {
             goToCreateTodoScreen()
@@ -35,14 +39,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initRv() {
-        val scope = CoroutineScope(Dispatchers.IO)
-        scope.launch {
+        binding.rvTasks.layoutManager = LinearLayoutManager(baseContext)
+        binding.rvTasks.adapter = todoAdapter
+    }
+
+    private fun getTodos() {
+        CoroutineScope(Dispatchers.IO).launch {
             val todos = dao.getTodos()
-            binding.rvTasks.layoutManager = LinearLayoutManager(baseContext)
-            binding.rvTasks.adapter = TodoAdapter(baseContext, todos) { todoTitle ->
-                scope.launch {
-                    dao.deleteTodo(todoTitle)
-                }
+            withContext(Dispatchers.Main) {
+                todoAdapter.updateList(todos)
+            }
+        }
+    }
+
+    private fun removeTodo(title: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            dao.deleteTodo(title)
+            val todos = dao.getTodos()
+            withContext(Dispatchers.Main) {
+                todoAdapter.updateList(todos)
             }
         }
     }
