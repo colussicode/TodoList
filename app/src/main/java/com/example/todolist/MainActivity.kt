@@ -4,13 +4,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.todolist.databinding.ActivityCreateTodoBinding
 import com.example.todolist.databinding.ActivityMainBinding
 import com.example.todolist.databinding.TodoItemBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -26,12 +24,15 @@ class MainActivity : AppCompatActivity() {
 
         initRv()
 
-        todoItemBiding.todoCheckbox.setOnClickListener {
-            deleteTodo()
-        }
-
         binding.buttonNewTodo.setOnClickListener {
             goToCreateTodoScreen()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        todoItemBiding.todoCheckbox.setOnClickListener {
+            deleteTodo()
         }
     }
 
@@ -52,8 +53,10 @@ class MainActivity : AppCompatActivity() {
     private fun deleteTodo() {
        val scope =  CoroutineScope(Dispatchers.IO)
         scope.launch {
+            val todoId = todoItemBiding.todoCheckbox.text.toString()
+            println(todoId)
             if(todoItemBiding.todoCheckbox.isChecked) {
-                dao.deleteTodo(todoItemBiding.todoCheckbox.text.toString())
+                dao.deleteTodo(todoId)
             }
         }
     }

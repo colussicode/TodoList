@@ -21,7 +21,7 @@
             tool:text="This is an example"
             android:paddingStart="8dp"
             android:buttonTint="@color/teal_700"
-            />
+            tool:ignore="RtlSymmetry" />
 
     </RelativeLayout>
 

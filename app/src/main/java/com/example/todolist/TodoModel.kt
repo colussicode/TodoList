@@ -6,5 +6,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "todos")
 data class TodoModel(
-    @PrimaryKey @ColumnInfo(name = "todo_title") val todoTitle: String
+    @PrimaryKey
+    @ColumnInfo(name = "todo_title") val todoTitle: String
 )
