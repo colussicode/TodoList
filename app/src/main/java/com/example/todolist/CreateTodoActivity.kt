@@ -23,11 +23,6 @@ class CreateTodoActivity : AppCompatActivity() {
         }
     }
 
-    private fun returnToHomeScreen() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-    }
-
     private fun createTodo() {
         val scope = CoroutineScope(Dispatchers.IO)
         scope.launch {
@@ -37,6 +32,6 @@ class CreateTodoActivity : AppCompatActivity() {
                 )
             )
         }
-        returnToHomeScreen()
+        finish()
     }
 }

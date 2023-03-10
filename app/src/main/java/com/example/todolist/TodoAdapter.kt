@@ -7,7 +7,7 @@ import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 
 class TodoAdapter(
-    private val onRemoveTodo: (todoTitle: String) -> Unit
+    private val onRemoveTodo: (todoTitle: String) -> Unit,
 ): RecyclerView.Adapter<TodoAdapter.ViewHolder>() {
 
     private var todoList: List<TodoModel> = emptyList()
@@ -30,7 +30,6 @@ class TodoAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.checkBox.text = todoList[position].todoTitle
-
         holder.checkBox.setOnClickListener {
             onRemoveTodo(todoList[position].todoTitle)
         }

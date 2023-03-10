@@ -4,4 +4,6 @@
     <string name="create_new_todo">Create new Todo</string>
     <string name="type_the_todo_title">Type the todo title</string>
     <string name="create_todo">Create todo</string>
+    <string name="edit_your_todo">Edit your Todo</string>
+    <string name="edit_todo">Edit Todo</string>
 </resources>

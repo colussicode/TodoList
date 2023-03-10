@@ -31,10 +31,24 @@ class MainActivity : AppCompatActivity() {
         binding.buttonNewTodo.setOnClickListener {
             goToCreateTodoScreen()
         }
+
+        todoItemBiding.todoBox.setOnClickListener {
+            goToEditTodoScreen()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getTodos()
     }
 
     private fun goToCreateTodoScreen() {
         val intent =  Intent(this, CreateTodoActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun goToEditTodoScreen() {
+        val intent = Intent(this, EditTodoActivity::class.java)
         startActivity(intent)
     }
 
