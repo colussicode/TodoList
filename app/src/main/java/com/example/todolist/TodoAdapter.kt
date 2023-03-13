@@ -27,10 +27,13 @@ class TodoAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = todoList[position]
+
         holder.itemBinding.todoCheckbox.text = item.todoTitle
+        if(holder.itemBinding.todoCheckbox.isChecked) {
+            holder.itemBinding.todoCheckbox.isChecked = false
+        }
         holder.itemBinding.todoCheckbox.setOnClickListener {
             onRemoveTodo(item.todoTitle)
-            holder.itemBinding.todoCheckbox.isChecked = false
         }
     }
 

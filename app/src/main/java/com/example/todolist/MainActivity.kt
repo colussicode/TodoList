@@ -10,7 +10,6 @@ import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var todoItemBiding: TodoItemBinding
     private lateinit var dao: TodoDAO
     private val todoAdapter: TodoAdapter by lazy {
         TodoAdapter { todoTitle ->
@@ -21,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        todoItemBiding = TodoItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
         dao = AppDatabase.getInstance(baseContext).todoDao()
 
@@ -30,10 +28,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.buttonNewTodo.setOnClickListener {
             goToCreateTodoScreen()
-        }
-
-        todoItemBiding.todoBox.setOnClickListener {
-            goToEditTodoScreen()
         }
     }
 
@@ -44,11 +38,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun goToCreateTodoScreen() {
         val intent =  Intent(this, CreateTodoActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun goToEditTodoScreen() {
-        val intent = Intent(this, EditTodoActivity::class.java)
         startActivity(intent)
     }
 
