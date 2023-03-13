@@ -1,10 +1,9 @@
 package com.example.todolist
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todolist.databinding.TodoItemBinding
 
 class TodoAdapter(
     private val onRemoveTodo: (todoTitle: String) -> Unit,
@@ -17,21 +16,21 @@ class TodoAdapter(
         notifyDataSetChanged()
     }
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        val checkBox: CheckBox = view.findViewById(R.id.todo_checkbox)
+    class ViewHolder(binding: TodoItemBinding): RecyclerView.ViewHolder(binding.root) {
+        var itemBinding = binding
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.todo_item, parent, false)
-
-        return ViewHolder(view)
+        val binding = TodoItemBinding.inflate(LayoutInflater.from(parent.context))
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.checkBox.text = todoList[position].todoTitle
-        holder.checkBox.setOnClickListener {
-            onRemoveTodo(todoList[position].todoTitle)
+        val item = todoList[position]
+        holder.itemBinding.todoCheckbox.text = item.todoTitle
+        holder.itemBinding.todoCheckbox.setOnClickListener {
+            onRemoveTodo(item.todoTitle)
+            holder.itemBinding.todoCheckbox.isChecked = false
         }
     }
 
