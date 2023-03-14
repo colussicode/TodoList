@@ -2,8 +2,8 @@ package com.example.todolist
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import com.example.todolist.databinding.ActivityEditTodoBinding
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -31,8 +31,8 @@ class EditTodoActivity : AppCompatActivity() {
         val newTitle = binding.edtTextEditTodo.text
         val todoId = intent.extras?.getInt("todoId")!!
 
-        CoroutineScope(Dispatchers.IO).launch {
-                dao.updateTodo(newTitle.toString(), todoId)
+        lifecycleScope.launch(Dispatchers.IO) {
+            dao.updateTodo(newTitle.toString(), todoId)
         }
 
         finish()

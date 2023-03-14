@@ -3,6 +3,7 @@ package com.example.todolist
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todolist.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getTodos() {
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             val todos = dao.getTodos()
             withContext(Dispatchers.Main) {
                 todoAdapter.updateList(todos)
@@ -59,7 +60,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun removeTodo(title: String) {
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             dao.deleteTodo(title)
             val todos = dao.getTodos()
             withContext(Dispatchers.Main) {

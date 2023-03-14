@@ -2,8 +2,8 @@ package com.example.todolist
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import com.example.todolist.databinding.ActivityCreateTodoBinding
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -23,8 +23,7 @@ class CreateTodoActivity : AppCompatActivity() {
     }
 
     private fun createTodo() {
-        val scope = CoroutineScope(Dispatchers.IO)
-        scope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             dao.createTodo(
                 TodoModel(
                     0,
