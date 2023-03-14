@@ -4,10 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.RelativeLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.example.todolist.databinding.TodoItemBinding
 
 class TodoAdapter(
+    private val onEditTodo: (todoTitle: String, todoId: Int) -> Unit,
     private val onRemoveTodo: (todoTitle: String) -> Unit,
 ): RecyclerView.Adapter<TodoAdapter.ViewHolder>() {
 
@@ -20,9 +21,9 @@ class TodoAdapter(
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val checkBox: CheckBox = view.findViewById(R.id.todo_checkbox)
+        val todoBox: RelativeLayout = view.findViewById(R.id.todo_box)
     }
 
-    //TODO: Can't use ViewBinding here (Loosing style properties)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val adapterLayout = LayoutInflater.from(parent.context)
             .inflate(R.layout.todo_item, parent, false)
@@ -39,6 +40,9 @@ class TodoAdapter(
         }
         holder.checkBox.setOnClickListener {
             onRemoveTodo(item.todoTitle)
+        }
+        holder.todoBox.setOnClickListener {
+            onEditTodo(item.todoTitle, item.todoId)
         }
     }
 

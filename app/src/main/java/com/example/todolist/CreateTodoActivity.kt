@@ -27,6 +27,7 @@ class CreateTodoActivity : AppCompatActivity() {
         scope.launch {
             dao.createTodo(
                 TodoModel(
+                    0,
                     binding.edtTextNewTodo.text.toString()
                 )
             )

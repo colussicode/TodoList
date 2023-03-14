@@ -11,7 +11,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var dao: TodoDAO
     private val todoAdapter: TodoAdapter by lazy {
-        TodoAdapter { todoTitle ->
+        TodoAdapter(
+            onEditTodo = { todoTitle, todoId ->
+                editTodo(todoTitle, todoId)
+            }
+        ) { todoTitle ->
             removeTodo(todoTitle)
         }
     }
@@ -62,5 +66,13 @@ class MainActivity : AppCompatActivity() {
                 todoAdapter.updateList(todos)
             }
         }
+    }
+
+    private fun editTodo(todoTitle: String, todoId: Int) {
+        val editTodoIntent = Intent(this, EditTodoActivity::class.java)
+        editTodoIntent.putExtra("todoTitle", todoTitle)
+        editTodoIntent.putExtra("todoId", todoId)
+
+        startActivity(editTodoIntent)
     }
 }
