@@ -1,11 +1,9 @@
 package com.example.todolist
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.RelativeLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todolist.databinding.TodoItemBinding
 
 class TodoAdapter(
     private val onEditTodo: (todoTitle: String, todoId: Int) -> Unit,
@@ -19,14 +17,13 @@ class TodoAdapter(
         notifyDataSetChanged()
     }
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        val checkBox: CheckBox = view.findViewById(R.id.todo_checkbox)
-        val todoBox: RelativeLayout = view.findViewById(R.id.todo_box)
+    class ViewHolder(binding: TodoItemBinding): RecyclerView.ViewHolder(binding.root) {
+        val checkBox = binding.todoCheckbox
+        val todoBox = binding.todoBox
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val adapterLayout = LayoutInflater.from(parent.context)
-            .inflate(R.layout.todo_item, parent, false)
+        val adapterLayout = TodoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return ViewHolder(adapterLayout)
     }
