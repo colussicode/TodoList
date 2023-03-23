@@ -24,7 +24,7 @@ class EditTodoActivity : AppCompatActivity() {
     }
 
     private fun getTodoTitle() {
-        binding.edtTextEditTodo.setText(intent.extras?.getString("todoTitle") ?: "no found")
+        binding.edtTextEditTodo.setText(intent.extras?.getString("todoTitle"))
     }
 
     private fun changeTodoName() {

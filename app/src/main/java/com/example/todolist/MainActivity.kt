@@ -12,15 +12,15 @@ class MainActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
-
     private val todoAdapter: TodoAdapter by lazy {
         TodoAdapter(
             onEditTodo = { todoTitle, todoId ->
                 editTodo(todoTitle, todoId)
+            },
+            onRemoveTodo = { todoTitle ->
+                removeTodo(todoTitle)
             }
-        ) { todoTitle ->
-            removeTodo(todoTitle)
-        }
+        )
     }
 
     private lateinit var dao: TodoDAO

@@ -26,8 +26,8 @@ class CreateTodoActivity : AppCompatActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             dao.createTodo(
                 TodoModel(
-                    0,
-                    binding.edtTextNewTodo.text.toString()
+                    todoId = 0,
+                    todoTitle = binding.edtTextNewTodo.text.toString()
                 )
             )
         }

@@ -32,9 +32,9 @@ class TodoAdapter(
         val item = todoList[position]
 
         holder.checkBox.text = item.todoTitle
-        if(holder.checkBox.isChecked) {
-            holder.checkBox.isChecked = false
-        }
+
+        if(holder.checkBox.isChecked) holder.checkBox.isChecked = false
+
         holder.checkBox.setOnClickListener {
             onRemoveTodo(item.todoTitle)
         }
