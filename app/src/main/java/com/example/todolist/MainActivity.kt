@@ -1,34 +1,37 @@
 package com.example.todolist
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todolist.databinding.ActivityMainBinding
-import kotlinx.coroutines.*
+import com.example.todolist.db.TodoDAO
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
+
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
-    private val todoAdapter: TodoAdapter by lazy {
-        TodoAdapter(
-            onEditTodo = { todoTitle, todoId ->
-                editTodo(todoTitle, todoId)
-            },
-            onRemoveTodo = { todoTitle ->
-                removeTodo(todoTitle)
-            }
-        )
+
+    private val dao: TodoDAO by lazy {
+        (application as MainApplication).databaseInstance.todoDao()
     }
 
-    private lateinit var dao: TodoDAO
+    private val todoAdapter: TodoAdapter by lazy {
+        TodoAdapter(onEditTodo = { todoTitle, todoId ->
+            editTodo(todoTitle, todoId)
+        }, onRemoveTodo = { todoTitle ->
+            removeTodo(todoTitle)
+        })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        dao = AppDatabase.getInstance(baseContext).todoDao()
 
         initRv()
         getTodos()
@@ -44,8 +47,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun goToCreateTodoScreen() {
-        val intent =  Intent(this, CreateTodoActivity::class.java)
-        startActivity(intent)
+        startActivity(Intent(this, CreateTodoActivity::class.java))
     }
 
     private fun initRv() {
@@ -73,10 +75,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun editTodo(todoTitle: String, todoId: Int) {
-        val editTodoIntent = Intent(this, EditTodoActivity::class.java)
-        editTodoIntent.putExtra("todoTitle", todoTitle)
-        editTodoIntent.putExtra("todoId", todoId)
-
-        startActivity(editTodoIntent)
+        startActivity(Intent(this, EditTodoActivity::class.java).apply {
+            putExtra("todoTitle", todoTitle)
+            putExtra("todoId", todoId)
+        })
     }
 }

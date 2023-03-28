@@ -1,20 +1,19 @@
 package com.example.todolist
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.todolist.databinding.ActivityEditTodoBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class EditTodoActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityEditTodoBinding
-    private lateinit var dao: TodoDAO
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditTodoBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        dao = AppDatabase.getInstance(baseContext).todoDao()
 
         getTodoTitle()
 
@@ -32,7 +31,8 @@ class EditTodoActivity : AppCompatActivity() {
         val todoId = intent.extras?.getInt("todoId")!!
 
         lifecycleScope.launch(Dispatchers.IO) {
-            dao.updateTodo(newTitle.toString(), todoId)
+            (application as MainApplication).databaseInstance.todoDao()
+                .updateTodo(newTitle.toString(), todoId)
         }
 
         finish()
