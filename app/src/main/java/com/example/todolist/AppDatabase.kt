@@ -10,7 +10,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun todoDao() : TodoDAO
 
     companion object {
-        @Volatile
         private var instance: AppDatabase? = null
 
         fun getInstance(context: Context) : AppDatabase {

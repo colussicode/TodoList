@@ -8,5 +8,6 @@ import androidx.room.PrimaryKey
 data class TodoModel(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "todo_id") val todoId: Int = 0,
+
     @ColumnInfo(name = "todo_title") val todoTitle: String
 )

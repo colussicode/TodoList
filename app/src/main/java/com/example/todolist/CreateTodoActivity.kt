@@ -2,19 +2,19 @@ package com.example.todolist
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import com.example.todolist.databinding.ActivityCreateTodoBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class CreateTodoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateTodoBinding
     private lateinit var dao: TodoDAO
+    private lateinit var createTodoViewModel: CreateTodoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dao = AppDatabase.getInstance(applicationContext).todoDao()
         binding = ActivityCreateTodoBinding.inflate(layoutInflater)
+        createTodoViewModel = ViewModelProvider(this, CreateTodoViewModelFactory(dao))[CreateTodoViewModel::class.java]
         setContentView(binding.root)
 
         binding.buttonCreateTodo.setOnClickListener {
@@ -23,14 +23,11 @@ class CreateTodoActivity : AppCompatActivity() {
     }
 
     private fun createTodo() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            dao.createTodo(
-                TodoModel(
-                    todoId = 0,
-                    todoTitle = binding.edtTextNewTodo.text.toString()
-                )
+        createTodoViewModel.createTodo(
+            TodoModel(
+                todoTitle = binding.edtTextNewTodo.text.toString()
             )
-        }
+        )
         finish()
     }
 }

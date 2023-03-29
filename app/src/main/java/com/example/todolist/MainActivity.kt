@@ -3,34 +3,28 @@ package com.example.todolist
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todolist.databinding.ActivityMainBinding
-import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
-    private val todoAdapter: TodoAdapter by lazy {
-        TodoAdapter(
-            onEditTodo = { todoTitle, todoId ->
-                editTodo(todoTitle, todoId)
-            },
-            onRemoveTodo = { todoTitle ->
-                removeTodo(todoTitle)
-            }
+    private val todoAdapter = TodoAdapter(
+            onEditTodo = ::editTodo,
+            onRemoveTodo = ::removeTodo
         )
-    }
 
     private lateinit var dao: TodoDAO
-
+    private lateinit var mainViewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        dao = AppDatabase.getInstance(baseContext).todoDao()
-
+        dao = AppDatabase.getInstance(this).todoDao()
+        mainViewModel = ViewModelProvider(this, MainViewModelFactory(dao))[MainViewModel::class.java]
         initRv()
+        observeTodoLiveData()
         getTodos()
 
         binding.buttonNewTodo.setOnClickListener {
@@ -41,6 +35,12 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         getTodos()
+    }
+
+    private fun observeTodoLiveData() {
+        mainViewModel.todos.observe(this){ todos ->
+            todoAdapter.updateList(todos)
+        }
     }
 
     private fun goToCreateTodoScreen() {
@@ -54,29 +54,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getTodos() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val todos = dao.getTodos()
-            withContext(Dispatchers.Main) {
-                todoAdapter.updateList(todos)
-            }
-        }
+        mainViewModel.getTodos()
     }
 
     private fun removeTodo(title: String) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            dao.deleteTodo(title)
-            val todos = dao.getTodos()
-            withContext(Dispatchers.Main) {
-                todoAdapter.updateList(todos)
-            }
-        }
+        mainViewModel.deleteTodo(title)
     }
 
     private fun editTodo(todoTitle: String, todoId: Int) {
-        val editTodoIntent = Intent(this, EditTodoActivity::class.java)
-        editTodoIntent.putExtra("todoTitle", todoTitle)
-        editTodoIntent.putExtra("todoId", todoId)
-
+        val editTodoIntent = Intent(this, EditTodoActivity::class.java).apply {
+            putExtra("todoTitle", todoTitle)
+            putExtra("todoId", todoId)
+        }
         startActivity(editTodoIntent)
     }
 }
