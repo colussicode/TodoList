@@ -1,6 +1,8 @@
 package com.example.todolist
 
 import androidx.lifecycle.*
+import com.example.todolist.db.TodoDAO
+import com.example.todolist.db.TodoModel
 import kotlinx.coroutines.launch
 
 class MainViewModel(

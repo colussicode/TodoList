@@ -7,14 +7,14 @@ import com.example.todolist.databinding.ActivityEditTodoBinding
 
 class EditTodoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditTodoBinding
-    private lateinit var dao: TodoDAO
     private lateinit var editTodoViewModel: EditTodoViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditTodoBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        dao = AppDatabase.getInstance(baseContext).todoDao()
-        editTodoViewModel = ViewModelProvider(this, EditTodoViewModelFactory(dao))[EditTodoViewModel::class.java]
+        editTodoViewModel = ViewModelProvider(this, EditTodoViewModelFactory(
+            (applicationContext as MainApplication).databaseInstance.todoDao()
+        ))[EditTodoViewModel::class.java]
         getTodoTitle()
 
         binding.buttonCreateTodo.setOnClickListener {

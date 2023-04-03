@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todolist.databinding.TodoItemBinding
+import com.example.todolist.db.TodoModel
 
 class TodoAdapter(
     private val onEditTodo: (todoTitle: String, todoId: Int) -> Unit,

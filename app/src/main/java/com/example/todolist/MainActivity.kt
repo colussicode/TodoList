@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todolist.databinding.ActivityMainBinding
+import com.example.todolist.db.TodoDAO
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy {
@@ -16,12 +17,13 @@ class MainActivity : AppCompatActivity() {
             onRemoveTodo = ::removeTodo
         )
 
-    private lateinit var dao: TodoDAO
+    private val dao: TodoDAO by lazy {
+        (application as MainApplication).databaseInstance.todoDao()
+    }
     private lateinit var mainViewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        dao = AppDatabase.getInstance(this).todoDao()
         mainViewModel = ViewModelProvider(this, MainViewModelFactory(dao))[MainViewModel::class.java]
         initRv()
         observeTodoLiveData()

@@ -3,6 +3,8 @@ package com.example.todolist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.todolist.db.TodoDAO
+import com.example.todolist.db.TodoModel
 import kotlinx.coroutines.launch
 
 class CreateTodoViewModel(

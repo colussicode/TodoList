@@ -4,17 +4,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.example.todolist.databinding.ActivityCreateTodoBinding
+import com.example.todolist.db.TodoModel
 
 class CreateTodoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateTodoBinding
-    private lateinit var dao: TodoDAO
     private lateinit var createTodoViewModel: CreateTodoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dao = AppDatabase.getInstance(applicationContext).todoDao()
         binding = ActivityCreateTodoBinding.inflate(layoutInflater)
-        createTodoViewModel = ViewModelProvider(this, CreateTodoViewModelFactory(dao))[CreateTodoViewModel::class.java]
+        createTodoViewModel = ViewModelProvider(this, CreateTodoViewModelFactory(
+            (application as MainApplication).databaseInstance.todoDao()
+        ))[CreateTodoViewModel::class.java]
         setContentView(binding.root)
 
         binding.buttonCreateTodo.setOnClickListener {
