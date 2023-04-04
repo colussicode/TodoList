@@ -2,9 +2,9 @@ package com.example.todolist
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.ViewModelProvider
 import com.example.todolist.databinding.ActivityEditTodoBinding
+import kotlinx.coroutines.Dispatchers
 
 class EditTodoActivity : AppCompatActivity() {
 
@@ -35,11 +35,6 @@ class EditTodoActivity : AppCompatActivity() {
         val newTitle = binding.edtTextEditTodo.text.toString()
         val todoId = intent.extras?.getInt("todoId")!!
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            (application as MainApplication).databaseInstance.todoDao()
-                .updateTodo(newTitle.toString(), todoId)
-        }
-        
         editTodoViewModel.updateTodo(newTitle, todoId)
         finish()
     }

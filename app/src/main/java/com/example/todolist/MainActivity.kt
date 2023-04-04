@@ -3,17 +3,10 @@ package com.example.todolist
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todolist.databinding.ActivityMainBinding
 import com.example.todolist.db.TodoDAO
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.todolist.databinding.ActivityMainBinding
-import com.example.todolist.db.TodoDAO
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,21 +18,11 @@ class MainActivity : AppCompatActivity() {
         (application as MainApplication).databaseInstance.todoDao()
     }
 
-    private val todoAdapter: TodoAdapter by lazy {
-        TodoAdapter(onEditTodo = { todoTitle, todoId ->
-            editTodo(todoTitle, todoId)
-        }, onRemoveTodo = { todoTitle ->
-            removeTodo(todoTitle)
-        })
-    }
     private val todoAdapter = TodoAdapter(
             onEditTodo = ::editTodo,
             onRemoveTodo = ::removeTodo
         )
 
-    private val dao: TodoDAO by lazy {
-        (application as MainApplication).databaseInstance.todoDao()
-    }
     private lateinit var mainViewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
