@@ -17,4 +17,5 @@ interface TodoDAO {
 
     @Query("UPDATE todos SET todo_title = :newTitle WHERE todo_id = :id")
     fun updateTodo(newTitle: String, id: Int)
+
 }
