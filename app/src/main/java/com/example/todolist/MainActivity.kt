@@ -1,16 +1,36 @@
 package com.example.todolist
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.todolist.databinding.ActivityMainBinding
+import com.example.todolist.db.TodoDAO
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todolist.databinding.ActivityMainBinding
 import com.example.todolist.db.TodoDAO
 
 class MainActivity : AppCompatActivity() {
+
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
+    }
+
+    private val dao: TodoDAO by lazy {
+        (application as MainApplication).databaseInstance.todoDao()
+    }
+
+    private val todoAdapter: TodoAdapter by lazy {
+        TodoAdapter(onEditTodo = { todoTitle, todoId ->
+            editTodo(todoTitle, todoId)
+        }, onRemoveTodo = { todoTitle ->
+            removeTodo(todoTitle)
+        })
     }
     private val todoAdapter = TodoAdapter(
             onEditTodo = ::editTodo,
@@ -24,7 +44,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         mainViewModel = ViewModelProvider(this, MainViewModelFactory(dao))[MainViewModel::class.java]
+
         initRv()
         observeTodoLiveData()
         getTodos()
@@ -46,8 +68,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun goToCreateTodoScreen() {
-        val intent =  Intent(this, CreateTodoActivity::class.java)
-        startActivity(intent)
+        startActivity(Intent(this, CreateTodoActivity::class.java))
     }
 
     private fun initRv() {
@@ -64,10 +85,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun editTodo(todoTitle: String, todoId: Int) {
+
+        startActivity(Intent(this, EditTodoActivity::class.java).apply {
+            putExtra("todoTitle", todoTitle)
+            putExtra("todoId", todoId)
+        })
+
         val editTodoIntent = Intent(this, EditTodoActivity::class.java).apply {
             putExtra("todoTitle", todoTitle)
             putExtra("todoId", todoId)
         }
         startActivity(editTodoIntent)
+
     }
 }
