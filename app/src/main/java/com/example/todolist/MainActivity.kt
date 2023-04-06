@@ -19,11 +19,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val todoAdapter = TodoAdapter(
-            onEditTodo = ::editTodo,
-            onRemoveTodo = ::removeTodo
-        )
+        ::editTodo,
+        ::removeTodo
+    )
 
     private lateinit var mainViewModel: MainViewModel
+
+    val createTodoFragment = CreateTodoFragment()
+    val editTodoFragment = EditTodoFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -39,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onResume() {
         super.onResume()
         getTodos()
@@ -51,7 +56,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun goToCreateTodoScreen() {
-        startActivity(Intent(this, CreateTodoActivity::class.java))
+        startActivity(Intent(this, CreateOrEditTodoActivity::class.java))
+
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment, createTodoFragment)
+            commit()
+        }
     }
 
     private fun initRv() {
@@ -69,16 +79,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun editTodo(todoTitle: String, todoId: Int) {
 
-        startActivity(Intent(this, EditTodoActivity::class.java).apply {
+        startActivity(Intent(this, CreateOrEditTodoActivity::class.java).apply {
             putExtra("todoTitle", todoTitle)
             putExtra("todoId", todoId)
+
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragment, editTodoFragment)
+                commit()
+            }
         })
-
-        val editTodoIntent = Intent(this, EditTodoActivity::class.java).apply {
-            putExtra("todoTitle", todoTitle)
-            putExtra("todoId", todoId)
-        }
-        startActivity(editTodoIntent)
-
     }
 }

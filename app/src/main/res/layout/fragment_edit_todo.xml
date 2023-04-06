@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="32dp"
-    tools:context=".CreateTodoActivity">
+    tools:context=".EditTodoFragment">
 
     <TextView
         android:id="@+id/textview_create_todo"
@@ -24,7 +24,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:inputType="text" />
+        android:inputType="text"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/button_createTodo"

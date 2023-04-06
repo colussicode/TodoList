@@ -22,9 +22,8 @@ class MainViewModel(
     fun deleteTodo(title: String) {
         viewModelScope.launch {
             dao.deleteTodo(title)
+            getTodos()
         }
-
-        getTodos()
     }
 }
 
