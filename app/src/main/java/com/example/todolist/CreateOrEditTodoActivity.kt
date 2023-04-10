@@ -3,7 +3,6 @@ package com.example.todolist
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.todolist.databinding.ActivityEditAndCreateTodoBinding
 import com.example.todolist.databinding.FragmentCreateTodoBinding
 
 class CreateOrEditTodoActivity : AppCompatActivity() {

@@ -25,8 +25,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mainViewModel: MainViewModel
 
-    val createTodoFragment = CreateTodoFragment()
-    val editTodoFragment = EditTodoFragment()
+    private val createTodoFragment = CreateTodoFragment()
+    private val editTodoFragment = EditTodoFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
