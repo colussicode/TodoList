@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="32dp"
-    tools:context=".CreateTodoFragment">
+    tools:context=".view.create.CreateTodoFragment">
 
     <TextView
         android:id="@+id/textview_create_todo"
@@ -18,21 +18,22 @@
         android:textColor="@color/black"/>
 
     <EditText
-        android:id="@+id/edtText_edit_todo"
+        android:id="@+id/edtText_newTodo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:inputType="text"
-        android:autofillHints="Create todo" />
+        android:hint="@string/type_the_todo_title"
+        android:gravity=""
+        android:inputType="text" />
 
     <Button
         android:id="@+id/button_createTodo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edtText_edit_todo"
+        app:layout_constraintTop_toBottomOf="@id/edtText_newTodo"
         android:text="@string/create_todo"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

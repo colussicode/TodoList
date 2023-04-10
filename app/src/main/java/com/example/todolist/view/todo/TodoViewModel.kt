@@ -1,13 +1,11 @@
-package com.example.todolist
+package com.example.todolist.view.todo
 
 import androidx.lifecycle.*
 import com.example.todolist.db.TodoDAO
 import com.example.todolist.db.TodoModel
 import kotlinx.coroutines.launch
 
-class MainViewModel(
-    private val dao: TodoDAO
-) : ViewModel() {
+class TodoViewModel(private val dao: TodoDAO) : ViewModel() {
 
     private val _todos = MutableLiveData<List<TodoModel>>()
     val todos: LiveData<List<TodoModel>> = _todos
@@ -28,5 +26,5 @@ class MainViewModel(
 }
 
 class MainViewModelFactory(private val dao: TodoDAO) : ViewModelProvider.NewInstanceFactory() {
-    override fun <T : ViewModel> create(modelClass: Class<T>) = MainViewModel(dao) as T
+    override fun <T : ViewModel> create(modelClass: Class<T>) = TodoViewModel(dao) as T
 }

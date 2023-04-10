@@ -14,8 +14,6 @@ class MainApplication : Application() {
     }
 
     private fun buildDatabase(context: Context): AppDatabase {
-        return Room.databaseBuilder(
-            context, AppDatabase::class.java, DB_NAME
-        ).fallbackToDestructiveMigration().build()
+        return Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME).build()
     }
 }
