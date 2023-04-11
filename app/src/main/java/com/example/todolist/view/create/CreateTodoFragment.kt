@@ -6,13 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.example.todolist.MainApplication
 import com.example.todolist.databinding.FragmentCreateTodoBinding
 import com.example.todolist.db.TodoModel
 import com.example.todolist.util.hideKeyboard
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class CreateTodoFragment : Fragment() {
 
@@ -44,11 +41,9 @@ class CreateTodoFragment : Fragment() {
     }
 
     private fun createTodo() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val model = TodoModel(todoId = 0, todoTitle = binding.edtTextNewTodo.text.toString())
-            (activity?.application as MainApplication).databaseInstance.todoDao().createTodo(model)
-            createTodoViewModel.createTodo(TodoModel(todoTitle = binding.edtTextNewTodo.text.toString()))
-        }
+        createTodoViewModel.createTodo(
+            TodoModel(todoTitle = binding.edtTextNewTodo.text.toString())
+        )
         activity?.onBackPressed()
     }
 

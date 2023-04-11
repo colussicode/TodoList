@@ -8,7 +8,7 @@
     tools:context=".view.create.CreateTodoFragment">
 
     <TextView
-        android:id="@+id/textview_create_todo"
+        android:id="@+id/textview_edit_todo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -27,7 +27,7 @@
         android:inputType="text" />
 
     <Button
-        android:id="@+id/button_createTodo"
+        android:id="@+id/button_editTodo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

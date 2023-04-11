@@ -6,12 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.example.todolist.MainApplication
 import com.example.todolist.databinding.FragmentEditTodoBinding
 import com.example.todolist.util.hideKeyboard
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class EditTodoFragment : Fragment() {
 
@@ -38,7 +35,7 @@ class EditTodoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         getTodoTitle()
 
-        binding.buttonCreateTodo.setOnClickListener {
+        binding.buttonEditTodo.setOnClickListener {
             it.hideKeyboard()
             changeTodoName()
         }
@@ -51,11 +48,6 @@ class EditTodoFragment : Fragment() {
     private fun changeTodoName() {
         val newTitle = binding.edtTextEditTodo.text.toString()
         val todoId = arguments?.getInt(KEY_TODO_ID) ?: 0
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            (activity?.application as MainApplication).databaseInstance.todoDao()
-                .updateTodo(newTitle, todoId)
-        }
 
         editTodoViewModel.updateTodo(newTitle, todoId)
         activity?.onBackPressed()
