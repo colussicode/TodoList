@@ -40,10 +40,14 @@ class TodoFragment : Fragment() {
         binding = FragmentTodoBinding.inflate(inflater)
 
         setupAdapter()
-        getTodos()
 
         todoViewModel.todos.observe(viewLifecycleOwner) { todos ->
             todoAdapter.updateList(todos)
+            if(todos.isEmpty()) {
+                binding.ctnContent.visibility = View.VISIBLE
+            } else {
+                binding.ctnContent.visibility = View.GONE
+            }
         }
 
         binding.buttonNewTodo.setOnClickListener {
