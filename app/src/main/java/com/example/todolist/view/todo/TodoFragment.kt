@@ -5,34 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todolist.MainApplication
 import com.example.todolist.R
 import com.example.todolist.databinding.FragmentTodoBinding
-import com.example.todolist.db.TodoDAO
 import com.example.todolist.view.create.CreateTodoFragment
 import com.example.todolist.view.edit.EditTodoFragment
 
 class TodoFragment : Fragment() {
 
     private lateinit var binding: FragmentTodoBinding
-    private lateinit var todoViewModel: TodoViewModel
 
-    private val dao: TodoDAO by lazy {
-        (activity?.application as MainApplication).databaseInstance.todoDao()
+    private val todoViewModel: TodoViewModel by lazy {
+        (activity?.application as MainApplication).todoViewModel!!
     }
 
     private val todoAdapter = TodoAdapter(
         onEditTodo = ::editTodo,
         onRemoveTodo = ::removeTodo
     )
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        todoViewModel =
-            ViewModelProvider(this, MainViewModelFactory(dao))[TodoViewModel::class.java]
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -43,11 +34,7 @@ class TodoFragment : Fragment() {
 
         todoViewModel.todos.observe(viewLifecycleOwner) { todos ->
             todoAdapter.updateList(todos)
-            if(todos.isEmpty()) {
-                binding.ctnContent.visibility = View.VISIBLE
-            } else {
-                binding.ctnContent.visibility = View.GONE
-            }
+            if(todos.isEmpty()) binding.ctnContent.visibility = View.VISIBLE else binding.ctnContent.visibility = View.GONE
         }
 
         binding.buttonNewTodo.setOnClickListener {

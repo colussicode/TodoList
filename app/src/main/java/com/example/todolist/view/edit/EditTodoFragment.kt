@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.todolist.MainApplication
 import com.example.todolist.databinding.FragmentEditTodoBinding
 import com.example.todolist.util.hideKeyboard
@@ -13,15 +12,8 @@ import com.example.todolist.util.hideKeyboard
 class EditTodoFragment : Fragment() {
 
     private lateinit var binding: FragmentEditTodoBinding
-    private lateinit var editTodoViewModel: EditTodoViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        editTodoViewModel = ViewModelProvider(
-            this, EditTodoViewModelFactory(
-                (activity?.applicationContext as MainApplication).databaseInstance.todoDao()
-            )
-        )[EditTodoViewModel::class.java]
+    private val editTodoViewModel: EditTodoViewModel by lazy {
+        (activity?.application as MainApplication).editTodoViewModel!!
     }
 
     override fun onCreateView(
