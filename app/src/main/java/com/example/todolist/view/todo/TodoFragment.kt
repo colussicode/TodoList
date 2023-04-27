@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todolist.MainApplication
 import com.example.todolist.R
@@ -16,8 +17,8 @@ class TodoFragment : Fragment() {
 
     private lateinit var binding: FragmentTodoBinding
 
-    private val todoViewModel: TodoViewModel by lazy {
-        (activity?.application as MainApplication).todoViewModel!!
+    private val todoViewModel: TodoViewModel by viewModels() {
+        (activity?.application as MainApplication).viewModelFactory
     }
 
     private val todoAdapter = TodoAdapter(
